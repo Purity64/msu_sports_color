@@ -57,7 +57,7 @@ export const authOptions: AuthOptions = {
             [stdID]
           );
 
-          const [update]:any = await pool.execute("UPDATE user SET name = ?",[user.name as string]);
+          const [update]:any = await pool.execute("UPDATE user SET name = ? WHERE token = ?",[user.name as string , user_rows[0].token]);
 
           if (user_rows.length > 0) {
             token.customToken = user_rows[0].token;
