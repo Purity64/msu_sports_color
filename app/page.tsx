@@ -1,8 +1,9 @@
 "use client";
 
 import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import Swal from "sweetalert2"; 
 
 function GoogleIcon() {
   return (
@@ -16,9 +17,38 @@ function GoogleIcon() {
 }
 
 export default function LoginPage() {
+  const searchParams = useSearchParams();
+  const error = searchParams.get('error');
   const { data: session, status } = useSession();
   const router = useRouter();
   
+  useEffect(() => {
+    if (error) {
+      console.log("Login Error:", error);
+
+      let title = "เข้าสู่ระบบไม่สำเร็จ";
+      let text = "เกิดข้อผิดพลาดในการเข้าสู่ระบบ กรุณาลองใหม่อีกครั้ง";
+
+      if (error === "AccessDenied") {
+        title = "ปฏิเสธการเข้าถึง!";
+        text = "กรุณาใช้บัญชีอีเมลของมหาวิทยาลัย (@msu.ac.th) ในการเข้าสู่ระบบเท่านั้น";
+      } else if (error === "Configuration") {
+        text = "ระบบปลายทางมีปัญหาในการเชื่อมต่อ (OAuth Configuration)";
+      }else if (error === "UserNotFound"){
+        text = "ไม่พบข้อมูลผู้ใช้โปรแจ้ง admin"
+      }
+
+      Swal.fire({
+        icon: 'error',
+        title: title,
+        text: text,
+        confirmButtonColor: '#1e293b',
+        confirmButtonText: 'ตกลง'
+      }).then(() => {
+        router.replace('/'); 
+      });
+    }
+  }, [error, router]);
   
   useEffect(() => {
     if (status === "authenticated") {
@@ -51,7 +81,6 @@ export default function LoginPage() {
           </header>
 
           <button
-            // ใส่ callbackUrl เพื่อระบุว่าหลังผ่านขั้นตอนล็อกอินของ Google แล้ว ให้เด้งกลับไปที่หน้าใด
             onClick={() => signIn("google", { callbackUrl: "/home" })}
             className="w-full flex items-center justify-center bg-white hover:bg-slate-50 text-slate-800 font-bold py-3.5 px-4 border border-slate-300/70 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.99] cursor-pointer"
           >
