@@ -8,17 +8,15 @@ export async function POST() {
     if (await isLogin()) {
         const session = await getServerSession(authOptions);
 
-        // ตรวจสอบว่าระบบสุ่มเปิดอยู่หรือไม่
         try {
-            const [settings]: any = await pool.execute(
-                "SELECT value FROM settings WHERE name = ?",
-                ["random_enabled"]
+            const [settings]: any = await pool.query(
+                "SELECT open_random FROM settings WHERE id = 1",
             );
-            if (settings.length > 0 && settings[0].value === "0") {
+            if (settings.length > 0 && settings[0].open_random === 0) {
                 return NextResponse.json({ message: "ระบบสุ่มถูกปิดอยู่ในขณะนี้" }, { status: 403 });
             }
         } catch {
-            // ถ้ายังไม่มีตาราง settings ให้ default เปิด
+            return NextResponse.json({ message: "ระบบเกิดข้อผิดพลาด" }, { status: 500 });
         }
 
         // ดึงการเชื่อมต่อ (Connection) ออกมาจาก Pool เพื่อทำ Transaction

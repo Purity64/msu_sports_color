@@ -35,7 +35,14 @@ export default function Home_RanDomBox() {
       });
 
       if (!res.ok) {
-        throw new Error("สุ่มสีไม่สำเร็จ");
+          Swal.fire({
+            title: "เกิดข้อผิดพลาด",
+            text: "ระบบปิดให้บริการ",
+            icon: "error",
+            confirmButtonColor: '#1e293b',
+          });
+
+          return;
       }
 
       const data = await res.json();
