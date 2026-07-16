@@ -17,11 +17,13 @@ export async function POST(req: NextRequest) {
     }
 
 
-    const values = studentIds.map(id => [id]);
-
+    const values = studentIds.map(id => {
+      const uniqueToken = crypto.randomUUID(); 
+      return [id, uniqueToken];
+    });
 
     const [result]: any = await pool.query(
-      "INSERT IGNORE INTO user (student_id) VALUES ?",
+      "INSERT IGNORE INTO user (student_id , token) VALUES ?",
       [values]
     );
 
