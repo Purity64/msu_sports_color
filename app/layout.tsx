@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MSU กีฬาสี",
+  title: "CS Sports day",
   description: "ระบบจัดการกีฬาสี มหาวิทยาลัยมหาสารคาม",
 };
 

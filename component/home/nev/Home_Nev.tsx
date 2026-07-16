@@ -20,7 +20,7 @@ function Home_nev() {
       
       <div className="flex items-center gap-1.5 selection:bg-amber-200">
         <h1 className="text-2xl font-black tracking-tight text-[#1e293b] flex">
-          <p>CS</p> <span className="text-[#d9a406] font-bold mx-2">Sports</span> {roloe === "admin" && ( <p>Admin Panal</p> ) }
+          <p>CS</p> <span className="text-[#d9a406] font-bold mx-2">Sports Day</span> {roloe === "admin" && ( <p>Admin Panal</p> ) }
         </h1>
       </div>
 

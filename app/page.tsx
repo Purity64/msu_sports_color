@@ -75,7 +75,7 @@ export default function LoginPage() {
             </div>
             
             <h1 className="text-3xl font-black tracking-tight text-[#1e293b]">
-              CS <span className="text-[#d9a406] drop-shadow-sm font-bold">Sports</span>
+              CS <span className="text-[#d9a406] drop-shadow-sm font-bold">Sports Day</span>
             </h1>
             <p className="text-sm font-medium text-slate-500 mt-1.5">ระบบจัดการกีฬาวิทยาการคอมพิวเตอร์</p>
           </header>
