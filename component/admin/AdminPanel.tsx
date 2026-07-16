@@ -130,7 +130,7 @@ const handel_delete = async (token: string) => {
       setLoading(true);
       try {
         const res = await fetch("/api/admin/delete_user", {
-          method: "DELETE",
+          method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ token: token }) 
         });
