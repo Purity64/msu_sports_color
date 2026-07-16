@@ -1,10 +1,10 @@
 "use client";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons'
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
 import { GetMessageGroup } from "@/util/GetColor";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMessage } from "@fortawesome/free-solid-svg-icons";
 
 interface UserItem {
   student_id: string;
@@ -18,14 +18,7 @@ interface HomeDetailProps {
 
 function Home_detail({ color, uselist = [] }: HomeDetailProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [message_link , setmessage_link] = useState("")
-  const fetchMessageLink = async() => {
-      const data = await GetMessageGroup(color);
-      setmessage_link(data);
-  }
-  useEffect(() => {
-    fetchMessageLink();
-  })
+
   const filteredUsers = uselist.filter((item) => {
     const searchLower = searchTerm.toLowerCase();
     return (
@@ -33,7 +26,15 @@ function Home_detail({ color, uselist = [] }: HomeDetailProps) {
       item.name.toLowerCase().includes(searchLower)
     );
   });
+  const [message_like , setmessage_like] = useState<string>("");
+  const fetch_messagelike = async() => {
+      const data = await GetMessageGroup(color);
+      setmessage_like(data);
+  }
 
+  useEffect(() => {
+    fetch_messagelike();
+  },[])
   const colorEmojiMap: Record<string, string> = {
     yellow: "💛 ทีมสีเหลือง",
     green: "💚 ทีมสีเขียว",
@@ -43,29 +44,20 @@ function Home_detail({ color, uselist = [] }: HomeDetailProps) {
 
   return (
     <div className="w-full lg:w-1/2 bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col transition-all">
-
+      {/* Header */}
       <header className="flex items-center justify-between w-full border-b border-slate-100 pb-4">
         <h1 className="text-xl font-bold text-slate-800">รายชื่อสมาชิกทีม</h1>
-        <div className="flex ">
-
-          <span className="text-sm font-semibold px-3 py-1 bg-slate-50 border border-slate-200 rounded-full text-slate-700">
-            {colorEmojiMap[color] || color}
-          </span>
-        </div>
+        <span className="text-sm font-semibold px-3 py-1 bg-slate-50 border border-slate-200 rounded-full text-slate-700">
+          {colorEmojiMap[color] || color}
+        </span>
       </header>
 
-      {/* กล่องค้นหา (UX/UI Search Bar) */}
-      {message_link ? (
-        <Link href={message_link} className="flex items-center p-3 justify-center mr-2 text-white font-semibold px-3 py-1 bg-blue-500 border border-slate-200 rounded-full text-slate-700">
-            <FontAwesomeIcon icon={faFacebookMessenger} className="mr-1"/>
-            <p>เข้ากลุ่ม facebook</p>
-        </Link>
-      ): (
-        <div className="flex items-center p-3 justify-center mr-2 text-white font-semibold px-3 py-1 bg-red-500 border border-slate-200 rounded-full text-slate-700">
-          <p>ไม่พบ link เข้ากลุ่ม</p>
-        </div>
-      )}
+      <Link href={message_like as string || "#"} className="flex items-center justify-center text-sm font-semibold px-3 py-2 bg-blue-500 border border-blue-200 rounded-full text-white">
+        <FontAwesomeIcon icon={faMessage} className="mr-2"/>
+        <p>เข้ากลุ่มสี</p>
+      </Link>
 
+      {/* กล่องค้นหา (UX/UI Search Bar) */}
       <div className="mt-5 flex gap-2">
         <div className="relative flex-1">
           <input
